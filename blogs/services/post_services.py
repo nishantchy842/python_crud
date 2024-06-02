@@ -16,7 +16,7 @@ class postServices:
         serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return serializer.data
+            return {"status": "success", "data": serializer.data, "http_status": status.HTTP_200_OK}
         else:
             raise Exception(serializer.errors)
 
@@ -32,4 +32,10 @@ class postServices:
     def delete_post(self, id):
         post = postModel.objects.get(id=id)
         post.delete()
+        
+        
+    def user_post(self, user_id):
+        user_post = postModel.objects.filter(author=user_id)  
+        return PostSerializer(user_post, many= True).data
+  
         

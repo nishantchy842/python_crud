@@ -5,6 +5,7 @@ from rest_framework import status
 
 class postViews(APIView):
     def get(self, request, id=None):
+        print('get api')
         service = postServices()
         if id:
             try:
@@ -15,12 +16,13 @@ class postViews(APIView):
                 return Response({"status": "error", "data": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         posts = service.get_all_posts()
+        print(posts)
         return Response(posts, status=status.HTTP_200_OK)
     
     def post(self, request):
-        print(request.data)
         service = postServices()
         try:
+            print(request.data)
             post = service.create_post(request.data)
             return Response(post, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -49,3 +51,8 @@ class postViews(APIView):
                 return Response({"status": "error", "data": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"status": "error", "data": "ID not provided"}, status=status.HTTP_400_BAD_REQUEST)   
+        
+    
+    # def userPost(self, request, id=None):
+    #     userPost = postServices().user_post(id)
+    #     return Response(userPost, status=status.HTTP_200_OK)
